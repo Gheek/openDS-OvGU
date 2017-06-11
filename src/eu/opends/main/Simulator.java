@@ -23,8 +23,6 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.sound.sampled.AudioFileFormat;
-
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
@@ -75,6 +73,7 @@ public class Simulator extends SimulationBasics
     private Nifty nifty;
     private boolean drivingTaskGiven = false;
     private boolean initializationFinished = false;
+    private boolean GhostWheelIsActive = false;
     
     private static String driverName;
     
@@ -197,6 +196,16 @@ public class Simulator extends SimulationBasics
 	public static String getOutputFolder()
 	{
 		return outputFolder;
+	}
+	
+	public boolean getGhostWheelIsActive()
+	{
+		return GhostWheelIsActive;
+	}
+	public void toggleGhostWheelIsActive()
+	{
+		GhostWheelIsActive = !GhostWheelIsActive;
+		PanelCenter.getMessageBox().addMessage("Autonomes Fahren ist " + GhostWheelIsActive, 5);
 	}
 	
 	
@@ -350,6 +359,9 @@ public class Simulator extends SimulationBasics
 		}
 		
 		initializationFinished = true;
+		
+		//
+		
     }
 
 
@@ -511,9 +523,9 @@ public class Simulator extends SimulationBasics
 			if(settingsControllerServer != null)
 				settingsControllerServer.close();
 			
-			dataWriter.micRecorder.finish();
-			
 			dataWriter.webcamGrabber.stop();
+			
+			dataWriter.micRecorder.finish();
 			
 			//initDrivingTaskSelectionGUI();
 		}
